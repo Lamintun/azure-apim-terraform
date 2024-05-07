@@ -68,7 +68,7 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v4
 
-    - nam: Got to terraform folder
+    - name: Go to terraform folder
       run: cd terraform
 
     # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token

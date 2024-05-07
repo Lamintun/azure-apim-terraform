@@ -12,6 +12,12 @@ variable "resource_group_name" {
 
 variable "vnet_name" {
   type        = string
-  default     = "apim-lamin-test"
-  description = "API Management name."
+  default     = "vnet-lamin-test"
+  description = "Virtual network name"
+}
+
+variable "subnet_name" {
+  type        = string
+  default     = "subnet-lamin-test"
+  description = "Subnet name"
 }

@@ -112,4 +112,4 @@ jobs:
         ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
         ARM_USE_OIDC: true
       # if: github.ref == 'refs/heads/"main"' && github.event_name == 'push'
-      run: terraform apply "tfplan" -auto-approve -input=false
+      run: terraform apply -auto-approve -input=false "tfplan"

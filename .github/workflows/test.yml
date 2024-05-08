@@ -27,7 +27,9 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v4
-
+        with:
+          ref: ${{ github.head_ref }}
+          
       # Login to Azure CLI
       - name: 'Az CLI login'
         uses: azure/login@v1

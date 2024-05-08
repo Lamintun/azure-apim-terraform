@@ -36,7 +36,7 @@ jobs:
             echo "$changedFiles"                                  
 
             changedFilesString = ""
-            for file in "${changedFiles[@]}"$
+            for file in "${changedFiles[@]}"
             do
               echo " filename - $file"
               FILENAME=$(basename "$file") 

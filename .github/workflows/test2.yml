@@ -21,7 +21,7 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v4
         with:
-          ref: ${{ github.head_ref }}
+          fetch-depth: 2
 
       # Get changed file names (efficiently)
       - name: Get changed API specification files

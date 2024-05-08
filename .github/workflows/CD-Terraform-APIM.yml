@@ -126,13 +126,13 @@ jobs:
 
         $echo "Details: $apim-name $apim-id $resource-group-name"
     
-        cat <<EOF > apim_details.json
-        {
-          "apim-name": "$apim-name",
-          "apim-id": "$apim-id",
-          "resource-group-name": "$resource-group-name"
-        }
-        EOF
+        # cat <<EOF > apim_details.json
+        # {
+        #   "apim-name": "$apim-name",
+        #   "apim-id": "$apim-id",
+        #   "resource-group-name": "$resource-group-name"
+        # }
+        # EOF
 
         cat apim_details.json
 

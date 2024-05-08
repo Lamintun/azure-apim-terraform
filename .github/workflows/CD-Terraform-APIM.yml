@@ -124,7 +124,7 @@ jobs:
         apim_id=$(terraform output apim-id)
         resource_group_name=$(terraform output resource-group-name)
 
-        $echo "Details: $apim_name $apim_id $resource_group_name"
+        echo "Details: $apim_name $apim_id $resource_group_name"
 
 
     # Upload the JSON file as an artifact

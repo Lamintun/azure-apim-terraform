@@ -54,8 +54,8 @@ permissions:
   contents: read
 
 jobs:
-  terraform:
-    name: 'Terraform'
+  Deploy_APIM:
+    name: 'Deploy_APIM'
     runs-on: ubuntu-latest
     environment: production
 

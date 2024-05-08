@@ -3,7 +3,7 @@ name: CD-API-Import
 
 # Controls when the workflow will run
 on:
-  # Triggers the workflow on push or pull request events but only for the "main" branch
+  # Triggers the workflow on push events but only for the "main" branch
   push:
     branches: [ "main" ]
     paths:
@@ -24,13 +24,15 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v4
 
+      # Login to Azure CLI
       - name: 'Az CLI login'
         uses: azure/login@v1
         with:
           client-id: ${{ secrets.AZURE_CLIENT_ID }}
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-
+      
+      # Download the APIM artifact
       - uses: actions/download-artifact@v4
         with:
           name: apim-artifact

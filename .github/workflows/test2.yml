@@ -29,15 +29,16 @@ jobs:
           git fetch origin main
           changedFiles=$(git diff --name-only HEAD~1 --)
           echo "$changedFiles"
-      #     changedFilesArray=$changedFiles -split "`n"
-      #     echo "CHANGED_FILES=$(changedFilesArray)" >> $GITHUB_ENV
+          # changedFilesArray=$changedFiles -split "`n"
+          changedFilesArray=(${changedFiles//\n/ })
+          echo "CHANGED_FILES=$(changedFilesArray)" >> $GITHUB_ENV
 
-      # # Print changed file names
-      # - name: Print changed API specifications
-      #   run: |
-      #     echo "List of changed API specifications:"
-      #     for file in ${{ env.CHANGED_FILES }}; do
-      #       echo " filename - $file"
-      #       FILENAME=$(basename "$file") 
-      #       echo " basename = $FILENAME"
-      #     done
+      # Print changed file names
+      - name: Print changed API specifications
+        run: |
+          echo "List of changed API specifications:"
+          for file in ${{ env.CHANGED_FILES }}; do
+            echo " filename - $file"
+            FILENAME=$(basename "$file") 
+            echo " basename = $FILENAME"
+          done

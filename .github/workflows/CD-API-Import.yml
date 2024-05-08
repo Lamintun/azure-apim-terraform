@@ -4,10 +4,10 @@ name: CD-API-Import
 # Controls when the workflow will run
 on:
   # Triggers the workflow on push events but only for the "main" branch
-  push:
-    branches: [ "main" ]
-    paths:
-          - api-specs/**
+  # push:
+  #   branches: [ "main" ]
+  #   paths:
+  #         - api-specs/**
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:

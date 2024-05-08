@@ -117,11 +117,13 @@ jobs:
       run: |
         apim_name=$(terraform output apim-name)
         apim_id=$(terraform output apim-id)
+        apim_id=$(terraform output resource-group-name)
     
         cat <<EOF > apim_details.json
         {
           "apim_name": "$apim_name",
-          "apim_id": "$apim_id"
+          "apim_id": "$apim_id",
+          "resource-group-name": "$resource-group-name"
         }
         EOF
 

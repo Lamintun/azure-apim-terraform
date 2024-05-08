@@ -1,5 +1,4 @@
 # This is a basic workflow to help you get started with Actions
-
 name: CD-API-Import
 
 # Controls when the workflow will run
@@ -36,24 +35,27 @@ jobs:
         with:
           name: apim-artifact
 
+      - run: echo "APIM_DETAILS=$(jq -c . < apim_details.json)" >> $GITHUB_ENV
+
       # Get changed file names (efficiently)
       - name: Get changed API specification files
         run: |
-          CHANGED_API_SPECS=$(git diff --name-only --diff-filter=d HEAD~ 'api-specs/*')  # Focus on deleted/modified files
+          changed_files=$(git diff --name-only --diff-filter=d HEAD~ 'api-specs/*')  # Focus on deleted/modified files
+          echo "CHANGED_FILES=$(changed_files)" >> $GITHUB_ENV
 
       # Print changed file names
       - name: Print changed API specifications
         run: |
           echo "List of changed API specifications:"
-          for file in ${{ steps.Get_changed_API_spec_files.outputs.CHANGED_API_SPECS }}; do
+          for file in ${{ env.CHANGED_FILES }}; do
             echo "  - $file"
           done
 
       # Loop through changed files and execute Azure CLI script for each
       - name: Run Azure CLI script for each changed file
         run: |
-          for file in ${{ steps.Get_changed_API_spec_files.outputs.CHANGED_API_SPECS }}; do
+          for file in ${{ env.CHANGED_FILES }}; do
             FILENAME=$(basename "$file")  # Extract filename
-            az apim api import -g MyResourceGroup --service-name ${{ fromJson(env.APIM_DETAILS).apim-name }} --path /{filename} --specification-path api-specs/"$file" --specification-format OpenApiJson
+            az apim api import -g ${{ fromJson(env.APIM_DETAILS).resource-group-name }} --service-name ${{ fromJson(env.APIM_DETAILS).apim-name }} --path /$FILENAME --specification-path api-specs/"$file" --specification-format OpenApiJson
           done
 

@@ -29,31 +29,34 @@ jobs:
           fetch-depth: 2
 
       # Get changed file names (efficiently)
-      - name: Azure CLI script
+      - name: Get changed files from last commit
         run: |
             git fetch origin main
             changedFiles=$(git diff --name-only --diff-filter=AM HEAD~1 --)
             echo "$changedFiles"                                  
 
             changedFilesString=""
-            for file in "${changedFiles[@]}"
-            do
-              echo " filename - $file"
-              FILENAME=$(basename "$file") 
-              echo " basename = $FILENAME"
-                if [[ -n "$changedFilesString" ]]; then
-                  changedFilesString+= ","
-                fi
-                changedFilesString+="$FILENAME"
-            done
+            while IFS= read -r line; do
+                if [[ -n "$test" ]]; then
+            	    changedFilesString+=","
+                fi            
+                changedFilesString+="$line"
+            done <<< "$changedFiles"
 
             echo $changedFilesString
-            echo "CHANGED_FILES=$changedFilesJson" >> $GITHUB_ENV
+            echo "CHANGED_FILES=$changedFilesString" >> $GITHUB_ENV
 
-      # # Get changed file names (efficiently)
-      # - name: Azure CLI script
-      #   uses: azure/cli@v2
-      #   with:
-      #     azcliversion: latest
-      #     inlineScript: |
+      # Get changed file names (efficiently)
+      - name: Azure CLI script
+        uses: azure/cli@v2
+        with:
+          azcliversion: latest
+          inlineScript: |
+            $ IFS=', ' read -r -a Files <<< "${{env.CHANGED_FILES}}"
+            $ for file in "${Files[@]}"
+            do
+                echo "$file"
+            done
+
+            
 

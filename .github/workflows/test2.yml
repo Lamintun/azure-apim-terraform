@@ -1,0 +1,41 @@
+# This is a basic workflow to help you get started with Actions
+name: test2
+
+# Controls when the workflow will run
+on:
+  workflow_dispatch:
+  
+permissions:
+  id-token: write
+  contents: read
+  
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  Import_API_Specifications:
+    name: 'Import_API_Specifications'
+    runs-on: ubuntu-latest
+    environment: production
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
+
+      # Get changed file names (efficiently)
+      - name: Get changed API specification files
+        run: |
+          changed_files=$(git diff --name-only HEAD~1 --)
+          changedFilesArray=$changedFiles -split "`n"
+          echo "CHANGED_FILES=$(changedFilesArray)" >> $GITHUB_ENV
+
+      # Print changed file names
+      - name: Print changed API specifications
+        run: |
+          echo "List of changed API specifications:"
+          for file in ${{ env.CHANGED_FILES }}; do
+            echo " filename - $file"
+            FILENAME=$(basename "$file") 
+            echo " basename = $FILENAME"
+          done

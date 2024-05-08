@@ -39,9 +39,9 @@ jobs:
       # Download the APIM artifact
       - name: Convert APIM details to JSON
         run: |
-          $apim_name= "test"
-          $apim_id= "test"
-          $apim_id= "test"
+          apim_name="test"
+          apim_id="test"
+          apim_id="test"
       
           cat <<EOF > apim_details.json
           {

@@ -1,0 +1,58 @@
+# This is a basic workflow to help you get started with Actions
+
+name: CD-API-Import
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the "main" branch
+  push:
+    branches: [ "main" ]
+    paths:
+          - api-specs/**
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v4
+
+      - name: 'Az CLI login'
+        uses: azure/login@v1
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: apim-artifact
+
+      # Get changed file names (efficiently)
+      - name: Get changed API specification files
+        run: |
+          CHANGED_API_SPECS=$(git diff --name-only --diff-filter=d HEAD~ 'api-specs/*')  # Focus on deleted/modified files
+
+      # Print changed file names
+      - name: Print changed API specifications
+        run: |
+          echo "List of changed API specifications:"
+          for file in ${{ steps.Get_changed_API_spec_files.outputs.CHANGED_API_SPECS }}; do
+            echo "  - $file"
+          done
+
+      # Loop through changed files and execute Azure CLI script for each
+      - name: Run Azure CLI script for each changed file
+        run: |
+          for file in ${{ steps.Get_changed_API_spec_files.outputs.CHANGED_API_SPECS }}; do
+            FILENAME=$(basename "$file")  # Extract filename
+            az apim api import -g MyResourceGroup --service-name ${{ fromJson(env.APIM_DETAILS).apim-name }} --path /{filename} --specification-path api-specs/"$file" --specification-format OpenApiJson
+          done
+

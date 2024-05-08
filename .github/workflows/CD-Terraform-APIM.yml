@@ -80,6 +80,8 @@ jobs:
     # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v1
+      with:
+        terraform_wrapper: false
 
     # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
     - name: Terraform Init
@@ -89,10 +91,6 @@ jobs:
         ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
         ARM_USE_OIDC: true
       run: terraform init
-
-    # # Checks that all Terraform configuration files adhere to a canonical format
-    # - name: Terraform Format
-    #   run: terraform fmt -check
 
     # Generates an execution plan for Terraform
     - name: Terraform Plan
@@ -113,3 +111,23 @@ jobs:
         ARM_USE_OIDC: true
       # if: github.ref == 'refs/heads/"main"' && github.event_name == 'push'
       run: terraform apply -auto-approve -input=false "tfplan"
+
+     # Create a JSON file with APIM details
+    - name: Convert APIM details to JSON
+      run: |
+        apim_name=$(terraform output apim-name)
+        apim_id=$(terraform output apim-id)
+    
+        cat <<EOF > apim_details.json
+        {
+          "apim_name": "$apim_name",
+          "apim_id": "$apim_id"
+        }
+        EOF
+
+    # Upload the JSON file as an artifact
+    - name: Upload json artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: apim-artifact
+        path: apim_details.json

@@ -36,7 +36,16 @@ jobs:
           echo "$changedFiles"
           # changedFilesArray=$changedFiles -split "\n"
           # changedFilesArray=(${changedFiles//\n/ }) 
-          changedFilesArray=($(echo "$changedFiles" | tr '\n' ' '))
+          # changedFilesArray=($(echo "$changedFiles" | tr '\n' ' '))
+
+          # Initialize an empty array
+          declare -a changedFilesArray=()
+          
+          # Iterate over the lines of changedFiles and add each line to the array
+          while IFS= read -r line; do
+            changedFilesArray+=("$line")
+          done <<< "$changedFiles"
+          
           echo "CHANGED_FILES=$(changedFilesArray)" >> $GITHUB_ENV
 
       # Print changed file names

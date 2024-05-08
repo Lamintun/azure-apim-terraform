@@ -120,11 +120,11 @@ jobs:
         ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
         ARM_USE_OIDC: true
       run: |
-        apim-name=$(terraform output apim-name)
-        apim-id=$(terraform output apim-id)
-        resource-group-name=$(terraform output resource-group-name)
+        apim_name=$(terraform output apim-name)
+        apim_id=$(terraform output apim-id)
+        resource_group_name=$(terraform output resource-group-name)
 
-        $echo "Details: $apim-name $apim-id $resource-group-name"
+        $echo "Details: $apim_name $apim_id $resource_group_name"
 
 
     # Upload the JSON file as an artifact

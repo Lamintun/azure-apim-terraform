@@ -43,9 +43,9 @@ jobs:
           
           # Iterate over the lines of changedFiles and add each line to the array
           while IFS= read -r line; do
-            changedFilesArray+=("$line")
+            $changedFilesArray+=("$line")
           done <<< "$changedFiles"
-          
+          echo "Array is $changedFilesArray"
           echo "CHANGED_FILES=$(changedFilesArray)" >> $GITHUB_ENV
 
       # Print changed file names

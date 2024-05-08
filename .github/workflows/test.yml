@@ -56,7 +56,8 @@ jobs:
       # Get changed file names (efficiently)
       - name: Get changed API specification files
         run: |
-          changed_files=$(git diff --name-only HEAD~ HEAD)
+          # changed_files=$(git diff --name-only HEAD~ HEAD)
+          changed_files=$(git diff --name-only HEAD..HEAD)
           echo "CHANGED_FILES=$(changed_files)" >> $GITHUB_ENV
 
       # Print changed file names

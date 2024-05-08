@@ -134,7 +134,7 @@ jobs:
         # }
         # EOF
 
-        cat apim_details.json
+        # cat apim_details.json
 
     # Upload the JSON file as an artifact
     - name: Upload json artifact

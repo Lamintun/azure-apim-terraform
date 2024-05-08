@@ -15,6 +15,11 @@ jobs:
     name: 'Import_API_Specifications'
     runs-on: ubuntu-latest
     environment: production
+    
+    # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
+    defaults:
+      run:
+        shell: bash
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -29,9 +34,9 @@ jobs:
           git fetch origin main
           changedFiles=$(git diff --name-only HEAD~1 --)
           echo "$changedFiles"
-          # changedFilesArray=$changedFiles -split "`n"
-          # changedFilesArray=(${changedFiles//\n/ })
-          changedFilesArray=($(echo "$changedFiles" | tr '\n' ' '))
+          changedFilesArray=$changedFiles -split "`n"
+          # changedFilesArray=(${changedFiles//\n/ }) 
+          # changedFilesArray=($(echo "$changedFiles" | tr '\n' ' '))
           echo "CHANGED_FILES=$(changedFilesArray)" >> $GITHUB_ENV
 
       # Print changed file names

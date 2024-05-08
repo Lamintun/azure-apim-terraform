@@ -32,7 +32,7 @@ jobs:
       - name: Get changed API specification files
         run: |
           git fetch origin main
-          changedFiles=$(git diff --name-only HEAD~1 --)
+          changedFiles=$(git diff --name-only --diff-filter=AM HEAD~1 --)
           echo "$changedFiles"
 
           # # Initialize an empty array

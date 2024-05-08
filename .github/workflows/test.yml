@@ -67,7 +67,9 @@ jobs:
         run: |
           echo "List of changed API specifications:"
           for file in ${{ env.CHANGED_FILES }}; do
-            echo "  - $file"
+            echo " filename - $file"
+            FILENAME=$(basename "$file") 
+            echo " basename = $FILENAME"
           done
 
       # # Loop through changed files and execute Azure CLI script for each

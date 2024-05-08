@@ -37,7 +37,7 @@ jobs:
 
             changedFilesString=""
             while IFS= read -r line; do
-                if [[ -n "$test" ]]; then
+                if [[ -n "$changedFilesString" ]]; then
             	    changedFilesString+=","
                 fi            
                 changedFilesString+="$line"
@@ -52,11 +52,9 @@ jobs:
         with:
           azcliversion: latest
           inlineScript: |
-            $ IFS=', ' read -r -a Files <<< "${{env.CHANGED_FILES}}"
-            $ for file in "${Files[@]}"
+            IFS=', ' read -r -a Files <<< "${{env.CHANGED_FILES}}"
+            for file in "${Files[@]}"
             do
-                echo "$file"
-            done
-
-            
+              echo "$file"
+            done            
 

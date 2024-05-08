@@ -15,6 +15,11 @@ jobs:
     name: 'Import_API_Specifications'
     runs-on: ubuntu-latest
     environment: production
+    
+    # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
+    defaults:
+      run:
+        shell: bash
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -29,15 +34,26 @@ jobs:
           git fetch origin main
           changedFiles=$(git diff --name-only HEAD~1 --)
           echo "$changedFiles"
-      #     changedFilesArray=$changedFiles -split "`n"
-      #     echo "CHANGED_FILES=$(changedFilesArray)" >> $GITHUB_ENV
+          # changedFilesArray=$changedFiles -split "\n"
+          # changedFilesArray=(${changedFiles//\n/ }) 
+          # changedFilesArray=($(echo "$changedFiles" | tr '\n' ' '))
 
-      # # Print changed file names
-      # - name: Print changed API specifications
-      #   run: |
-      #     echo "List of changed API specifications:"
-      #     for file in ${{ env.CHANGED_FILES }}; do
-      #       echo " filename - $file"
-      #       FILENAME=$(basename "$file") 
-      #       echo " basename = $FILENAME"
-      #     done
+          # Initialize an empty array
+          declare -a changedFilesArray=()
+          
+          # Iterate over the lines of changedFiles and add each line to the array
+          while IFS= read -r line; do
+            changedFilesArray+=("$line")
+          done <<< "$changedFiles"
+          echo "Array is $changedFilesArray"
+          echo "CHANGED_FILES=$changedFilesArray" >> $GITHUB_ENV
+
+      # Print changed file names
+      - name: Print changed API specifications
+        run: |
+          echo "List of changed API specifications:"
+          for file in ${{ env.CHANGED_FILES }}; do
+            echo " filename - $file"
+            FILENAME=$(basename "$file") 
+            echo " basename = $FILENAME"
+          done

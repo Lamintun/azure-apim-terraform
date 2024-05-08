@@ -27,7 +27,7 @@ jobs:
       - name: Get changed API specification files
         run: |
           git fetch origin main
-          changed_files=$(git diff --name-only HEAD~1 --)
+          changedFiles=$(git diff --name-only HEAD~1 --)
           changedFilesArray=$changedFiles -split "`n"
           echo "CHANGED_FILES=$(changedFilesArray)" >> $GITHUB_ENV
 

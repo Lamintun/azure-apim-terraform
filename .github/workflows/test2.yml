@@ -46,7 +46,7 @@ jobs:
             changedFilesArray+=("$line")
           done <<< "$changedFiles"
           echo "Array is $changedFilesArray"
-          echo "CHANGED_FILES=$(changedFilesArray)" >> $GITHUB_ENV
+          echo "CHANGED_FILES=$changedFilesArray" >> $GITHUB_ENV
 
       # Print changed file names
       - name: Print changed API specifications

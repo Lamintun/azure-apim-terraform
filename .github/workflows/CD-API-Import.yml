@@ -4,10 +4,10 @@ name: CD-API-Import
 # Controls when the workflow will run
 on:
   # Triggers the workflow on push events but only for the "main" branch
-  # push:
-  #   branches: [ "main" ]
-  #   paths:
-  #         - api-specs/**
+  push:
+    branches: [ "main" ]
+    paths:
+          - api-specs/**
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -27,6 +27,8 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
 
       # Login to Azure CLI
       - name: 'Az CLI login'
@@ -37,31 +39,43 @@ jobs:
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
       
       # Download the APIM artifact
-      - uses: actions/download-artifact@v4
+      - name: Download APIM artifact
+        uses: actions/download-artifact@v4
         with:
           name: apim-artifact
 
-      - run: echo "APIM_DETAILS=$(jq -c . < apim_details.json)" >> $GITHUB_ENV
+      # Get the APIM info
+      - name: Get APIM Detail      
+        run: echo "APIM_DETAILS=$(jq -c . < apim_details.json)" >> $GITHUB_ENV
 
-      # Get changed file names (efficiently)
-      - name: Get changed API specification files
+      # Get API files committed
+      - name: Get changed files from last commit
         run: |
-          changed_files=$(git diff --name-only --diff-filter=d HEAD~ 'api-specs/*')  # Focus on deleted/modified files
-          echo "CHANGED_FILES=$(changed_files)" >> $GITHUB_ENV
+            git fetch origin main
+            changedFiles=$(git diff --name-only --diff-filter=AM HEAD~1 --)
+            echo "$changedFiles"                                  
 
-      # Print changed file names
-      - name: Print changed API specifications
-        run: |
-          echo "List of changed API specifications:"
-          for file in ${{ env.CHANGED_FILES }}; do
-            echo "  - $file"
-          done
+            changedFilesString=""
+            while IFS= read -r line; do
+                if [[ -n "$changedFilesString" ]]; then
+            	    changedFilesString+=","
+                fi            
+                changedFilesString+="$line"
+            done <<< "$changedFiles"
 
-      # Loop through changed files and execute Azure CLI script for each
-      - name: Run Azure CLI script for each changed file
-        run: |
-          for file in ${{ env.CHANGED_FILES }}; do
-            FILENAME=$(basename "$file")  # Extract filename
-            az apim api import -g ${{ fromJson(env.APIM_DETAILS).resource-group-name }} --service-name ${{ fromJson(env.APIM_DETAILS).apim-name }} --path /$FILENAME --specification-path api-specs/"$file" --specification-format OpenApiJson
-          done
+            echo $changedFilesString
+            echo "CHANGED_FILES=$changedFilesString" >> $GITHUB_ENV
+
+      # Import APIs to APIM
+      - name: Azure CLI script
+        uses: azure/cli@v2
+        with:
+          azcliversion: latest
+          inlineScript: |
+            IFS=', ' read -r -a Files <<< "${{env.CHANGED_FILES}}"
+            for file in "${Files[@]}"
+            do
+              echo "$file"
+              # az apim api import -g ${{ fromJson(env.APIM_DETAILS).resource-group-name }} --service-name ${{ fromJson(env.APIM_DETAILS).apim-name }} --path /$FILENAME --specification-path api-specs/"$file" --specification-format OpenApiJson
+            done  
 

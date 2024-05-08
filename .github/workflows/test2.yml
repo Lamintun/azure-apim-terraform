@@ -35,13 +35,16 @@ jobs:
             changedFiles=$(git diff --name-only --diff-filter=AM HEAD~1 --)
             echo "$changedFiles"                                  
 
-            changedFilesString = ""
+            changedFilesString=""
             for file in "${changedFiles[@]}"
             do
               echo " filename - $file"
               FILENAME=$(basename "$file") 
               echo " basename = $FILENAME"
-              changedFilesString+= ",$FILENAME"
+                if [[ -n "$changedFilesString" ]]; then
+                  changedFilesString+= ","
+                fi
+                changedFilesString+="$FILENAME"
             done
 
             echo $changedFilesString

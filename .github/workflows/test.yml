@@ -58,8 +58,9 @@ jobs:
       # Get changed file names (efficiently)
       - name: Get changed API specification files
         run: |
-          commit_hash=$(git rev-parse HEAD~1)
-          changed_files=$(git diff --name-only $commit_hash --)
+          git fetch origin main:main
+          # commit_hash=$(git rev-parse HEAD~1)
+          changed_files=$(git diff --name-only HEAD~1 --)
           changedFilesArray=$changedFiles -split "`n"
           echo "CHANGED_FILES=$(changedFilesArray)" >> $GITHUB_ENV
 

@@ -58,6 +58,7 @@ jobs:
         run: |
           # changed_files=$(git diff --name-only HEAD~ HEAD)
           changed_files=$(git diff --name-only HEAD..HEAD)
+          changedFilesArray=$changedFiles -split "`n"
           echo "CHANGED_FILES=$(changed_files)" >> $GITHUB_ENV
 
       # Print changed file names

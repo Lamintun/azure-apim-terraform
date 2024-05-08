@@ -29,28 +29,18 @@ jobs:
           fetch-depth: 2
 
       # Get changed file names (efficiently)
-      - name: Get changed API specification files
-        run: |
-          git fetch origin main
-          changedFiles=$(git diff --name-only --diff-filter=AM HEAD~1 --)
-          echo "$changedFiles"
+      - name: Azure CLI script
+        uses: azure/cli@v2
+        with:
+          azcliversion: latest
+          inlineScript: |
+            git fetch origin main
+            changedFiles=$(git diff --name-only --diff-filter=AM HEAD~1 --)
+            echo "$changedFiles"
 
-          # # Initialize an empty array
-          # declare -a changedFilesArray=()
-          
-          # # Iterate over the lines of changedFiles and add each line to the array
-          # while IFS= read -r line; do
-          #   changedFilesArray+=("$line")
-          # done <<< "$changedFiles"
-          # echo "Array is $changedFilesArray"
-          echo "CHANGED_FILES=$changedFiles" >> $GITHUB_ENV
+            for file in $changedFiles; do
+              echo " filename - $file"
+              FILENAME=$(basename "$file") 
+              echo " basename = $FILENAME"
+            done
 
-      # Print changed file names
-      - name: Print changed API specifications
-        run: |
-          echo "List of changed API specifications:"
-          for file in ${{ env.CHANGED_FILES }}; do
-            echo " filename - $file"
-            FILENAME=$(basename "$file") 
-            echo " basename = $FILENAME"
-          done

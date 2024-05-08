@@ -1,6 +1,6 @@
 
 resource "azurerm_resource_group" "resourcegroup" {
-  name     = "rg-lamin-terraform-apim-test"
+  name     = "rg-lamin-terraform-apim-test2"
   location = "eastus"
 }
 

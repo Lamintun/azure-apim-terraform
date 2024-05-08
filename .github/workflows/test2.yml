@@ -33,18 +33,19 @@ jobs:
         run: |
             git fetch origin main
             changedFiles=$(git diff --name-only --diff-filter=AM HEAD~1 --)
-            echo "$changedFiles"
-            
-            changedFilesJson=$(echo "${changedFiles[@]}" | jq --raw-output '["",(.[] | @csv)]')
-            echo "$changedFilesJson"
-            
-            echo "CHANGED_FILES=$changedFilesJson" >> $GITHUB_ENV
-            
-            for file in $changedFiles; do
+            echo "$changedFiles"                                  
+
+            changedFilesString = ""
+            for file in "${changedFiles[@]}"$
+            do
               echo " filename - $file"
               FILENAME=$(basename "$file") 
               echo " basename = $FILENAME"
+              changedFilesString+= ",$FILENAME"
             done
+
+            echo $changedFilesString
+            echo "CHANGED_FILES=$changedFilesJson" >> $GITHUB_ENV
 
       # # Get changed file names (efficiently)
       # - name: Azure CLI script

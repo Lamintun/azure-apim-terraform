@@ -6,7 +6,7 @@ info:
 servers:
   - url: https://function-lamin-test.azurewebsites.net/api/
 paths:
-  /HttpTrigger1:
+  /test2:
     get:
       summary: test2
       operationId: get-test2

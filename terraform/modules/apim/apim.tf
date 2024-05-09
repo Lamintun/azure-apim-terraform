@@ -6,9 +6,9 @@ resource "azurerm_api_management" "apim" {
   publisher_name      = var.publisher_name
   sku_name            = "${var.sku}_${var.sku_count}"
 
-  # virtual_network_type                = "External"  
-  # virtual_network_configuration {
-  #   subnet_id = var.subnet_id
-  # }
+  virtual_network_type                = "External"  
+  virtual_network_configuration {
+    subnet_id = var.subnet_id
+  }
   
 }

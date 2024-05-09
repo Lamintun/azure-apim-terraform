@@ -21,3 +21,9 @@ variable "subnet_name" {
   default     = "subnet-lamin-test"
   description = "Subnet name"
 }
+
+variable "nsg_name" {
+  type        = string
+  default     = "nsg-lamin-test"
+  description = "Subnet name"
+}

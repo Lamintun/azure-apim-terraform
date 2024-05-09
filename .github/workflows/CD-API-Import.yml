@@ -39,16 +39,16 @@ jobs:
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
       
-      # Download the APIM artifact
-      - name: Download APIM artifact
-        uses: actions/download-artifact@v4
-        with:
-          repository: ${{ github.repository }}          
-          path: terraform/*
+      # # Download the APIM artifact
+      # - name: Download APIM artifact
+      #   uses: actions/download-artifact@v4
+      #   with:
+      #     repository: ${{ github.repository }}          
+      #     path: terraform/*
 
-      # Get the APIM info
-      - name: Get APIM Detail      
-        run: echo "APIM_DETAILS=$(jq -c . < apim_details.json)" >> $GITHUB_ENV
+      # # Get the APIM info
+      # - name: Get APIM Detail      
+      #   run: echo "APIM_DETAILS=$(jq -c . < apim_details.json)" >> $GITHUB_ENV
 
       # Get API files committed
       - name: Get changed files from last commit
@@ -77,7 +77,8 @@ jobs:
             IFS=', ' read -r -a Files <<< "${{env.CHANGED_FILES}}"
             for file in "${Files[@]}"
             do
-              echo "$file"
-              # az apim api import -g ${{ fromJson(env.APIM_DETAILS).resource-group-name }} --service-name ${{ fromJson(env.APIM_DETAILS).apim-name }} --path /$FILENAME --specification-path api-specs/"$file" --specification-format OpenApiJson
+              SERVICE_PATH=$(basename "$file" | cut -d '.' -f1)
+              echo "$SERVICE_PATH"
+              # az apim api import -g ${{ secrets.RESOURCE_GROUP_NAME }} --service-name ${{ secrets.APIM_NAME }} --path /$SERVICE_PATH --specification-path api-specs/"$file" --specification-format OpenApiJson
             done  
 

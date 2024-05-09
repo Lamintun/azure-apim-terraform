@@ -4,18 +4,18 @@ info:
   description: Import from "lamin-function-test" Function App
   version: '1.0'
 servers:
-  - url: https://apim-lamin-test.azure-api.net/test2
+  - url: https://function-lamin-test.azurewebsites.net/api/test2
 paths:
   /HttpTrigger1:
     get:
-      summary: HttpTrigger1
-      operationId: get-httptrigger1
+      summary: test2
+      operationId: get-test2
       responses:
         '200':
           description: 
     post:
-      summary: HttpTrigger1
-      operationId: post-httptrigger1
+      summary: test2
+      operationId: post-test2
       responses:
         '200':
           description: 

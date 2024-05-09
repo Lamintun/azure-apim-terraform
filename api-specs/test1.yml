@@ -1,21 +1,21 @@
 openapi: 3.0.1
 info:
-  title: test2
+  title: test1
   description: Import from "lamin-function-test" Function App
   version: '1.0'
 servers:
-  - url: https://apim-lamin-test.azure-api.net/test2
+  - url: https://function-lamin-test.azurewebsites.net/api/test1
 paths:
   /HttpTrigger1:
     get:
-      summary: HttpTrigger1
-      operationId: get-httptrigger1
+      summary: test1
+      operationId: get-test1
       responses:
         '200':
           description: 
     post:
-      summary: HttpTrigger1
-      operationId: post-httptrigger1
+      summary: test1
+      operationId: post-test1
       responses:
         '200':
           description: 

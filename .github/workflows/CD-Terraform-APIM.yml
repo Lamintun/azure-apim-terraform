@@ -140,4 +140,4 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: apim-artifact
-        path: apim_details.json
+        path: terraform/apim_details.json

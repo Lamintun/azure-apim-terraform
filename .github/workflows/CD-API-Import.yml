@@ -79,10 +79,6 @@ jobs:
             do
               SERVICE_PATH=$(basename "$file" | cut -d '.' -f1)
               echo "$SERVICE_PATH"
-              az apim api import -g ${{ secrets.RESOURCE_GROUP_NAME }} `
-              --service-name ${{ secrets.APIM_NAME }} `
-              --path "/$SERVICE_PATH" `
-              --specification-path "$file" `
-              --specification-format OpenApiJson
+              az apim api import -g ${{ secrets.RESOURCE_GROUP_NAME }} --service-name ${{ secrets.APIM_NAME }} --path "/$SERVICE_PATH" --specification-path "$file" --specification-format OpenApiJson
             done  
 

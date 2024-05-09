@@ -5,6 +5,7 @@ info:
   version: '1.0'
 servers:
   - url: https://function-lamin-test.azurewebsites.net/api/
+  
 paths:
   /test2:
     get:

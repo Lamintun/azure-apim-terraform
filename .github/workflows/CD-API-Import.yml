@@ -15,7 +15,6 @@ on:
 permissions:
   id-token: write
   contents: read
-  actions: read
   
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -44,7 +43,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: apim-artifact
-          github-token: ${{ github.token }}
+          repository: ${{ github.repository }}
 
       # Get the APIM info
       - name: Get APIM Detail      

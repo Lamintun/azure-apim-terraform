@@ -43,7 +43,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           repository: ${{ github.repository }}          
-          path: terraform/apim_details.json
+          path: terraform/*
 
       # Get the APIM info
       - name: Get APIM Detail      

@@ -4,10 +4,10 @@ info:
   description: Import from "lamin-function-test" Function App
   version: '1.0'
 servers:
-  - url: https://function-lamin-test.azurewebsites.net/api/test1
+  - url: https://function-lamin-test.azurewebsites.net/api/
 paths:
   /HttpTrigger1:
-    get:
+    get:      
       summary: test1
       operationId: get-test1
       responses:

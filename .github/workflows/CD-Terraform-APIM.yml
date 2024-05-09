@@ -112,32 +112,32 @@ jobs:
       # if: github.ref == 'refs/heads/"main"' && github.event_name == 'push'
       run: terraform apply -auto-approve -input=false "tfplan"
 
-     # Create a JSON file with APIM details
-    - name: Convert APIM details to JSON
-      env:
-        ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
-        ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
-        ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-        ARM_USE_OIDC: true
-      run: |
-        apim_name=$(terraform output apim-name)
-        apim_id=$(terraform output apim-id)
-        resource_group_name=$(terraform output resource-group-name)
+    #  # Create a JSON file with APIM details
+    # - name: Convert APIM details to JSON
+    #   env:
+    #     ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+    #     ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+    #     ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+    #     ARM_USE_OIDC: true
+    #   run: |
+    #     apim_name=$(terraform output apim-name)
+    #     apim_id=$(terraform output apim-id)
+    #     resource_group_name=$(terraform output resource-group-name)
 
-        echo "Details: $apim_name $apim_id $resource_group_name"
-        cat <<EOF > apim_details.json
-        {
-          "apim-name": $apim_name,
-          "apim-id": $apim_id,
-          "resource-group-name": $resource_group_name
-        }
-        EOF
+    #     echo "Details: $apim_name $apim_id $resource_group_name"
+    #     cat <<EOF > apim_details.json
+    #     {
+    #       "apim-name": $apim_name,
+    #       "apim-id": $apim_id,
+    #       "resource-group-name": $resource_group_name
+    #     }
+    #     EOF
         
-        cat apim_details.json
+    #     cat apim_details.json
 
-    # Upload the JSON file as an artifact
-    - name: Upload json artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: apim-artifact
-        path: terraform/apim_details.json
+    # # Upload the JSON file as an artifact
+    # - name: Upload json artifact
+    #   uses: actions/upload-artifact@v4
+    #   with:
+    #     name: apim-artifact
+    #     path: terraform/apim_details.json

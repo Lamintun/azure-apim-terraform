@@ -125,7 +125,15 @@ jobs:
         resource_group_name=$(terraform output resource-group-name)
 
         echo "Details: $apim_name $apim_id $resource_group_name"
-
+        cat <<EOF > apim_details.json
+        {
+          "apim-name": "$apim_name",
+          "apim-id": "$apim_id",
+          "resource-group-name": "$resource_group_name"
+        }
+        EOF
+        
+        cat apim_details.json
 
     # Upload the JSON file as an artifact
     - name: Upload json artifact

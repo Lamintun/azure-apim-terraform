@@ -2,3 +2,4 @@ terraform/.terraform/providers/registry.terraform.io/hashicorp/azurerm/3.102.0/w
 terraform/.terraform/terraform.tfstate
 terraform/.terraform/modules/modules.json
 terraform/.terraform.lock.hcl
+terraform/.terraform/providers/registry.terraform.io/hashicorp/azurerm/3.103.1/windows_amd64/terraform-provider-azurerm_v3.103.1_x5.exe
